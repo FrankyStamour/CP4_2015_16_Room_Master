@@ -45,13 +45,11 @@ int previous = LOW;    // the previous reading from the input pin
 long time = 0;         // the last time the output pin was toggled
 long debounce = 200;   // the debounce time, increase if the output flickers
 
-
-
-
-
 /*
 Adafruit Arduino - Lesson 6. Inputs
 */
+
+//TEAM OT'S PROJECT
 
 #include <Servo.h>
   
@@ -63,6 +61,38 @@ Adafruit Arduino - Lesson 6. Inputs
   const int SW_pin = 2; // Analog pin A0 connected X to output
   const int SG90 = 9; //Analog pin A3 connected to myservo
   int pos = 0;    // variable to store the servo position
+    
+    void setup () {
+   pinMode(SW_pin, INPUT);
+   digitalWrite(SW_pin, HIGH);
+   Serial.begin(115200);
+   myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
+  }
+ 
+    Serial.print("Switch: ");             //the name switch appears on the serial monitor
+    Serial.print(digitalRead(SW_pin));    //shows the switch on the serial monitor
+    Serial.print("\n");
+    Serial.print("X-axis: ");             //the name X-axis appears on the serial monitor
+    Serial.print(analogRead(VRx_pin));    //shows the X coordonate on the serial monitor
+    Serial.print("\n");
+    Serial.print("Y-axis: ");             //the name Y-Axis appears on the serial monitor
+    Serial.println(analogRead(VRy_pin));  //shows the Y coordonate on the serial monitor
+    Serial.print("\n");
+    delay(100);
+
+    if (analogRead(VRy_pin) < 450){  //If the analog stick is pushed down, the servo will move to the right by 10
+      
+    myservo.write(pos);
+    pos -= 10;
+  }
+    else if (analogRead(VRy_pin) > 550){  //If the analog stick is pushed up, the servo will move to the left by 10
+  
+    myservo.write(pos); 
+    pos += 10;}
+ }
+
+//END OF PROJECT
+
 
 *PROJECTOR: ON/OFF ONE BUTTON
 
@@ -85,7 +115,6 @@ http://www.arduino.cc/en/Tutorial/Debounce */
 // Variables will change: int ProjectorState = HIGH; // the current state of the output pin int ProjectorButtonState; // the current reading from the input pin int lastProjectorButtonState = LOW; // the previous reading from the input pin
 
 // the following variables are long's because the time, measured in miliseconds, // will quickly become a bigger number than can be stored in an int. long lastDebounceTime = 0; // the last time the output pin was toggled long debounceDelay = 50; // the debounce time; increase if the output flickers
-
 
 
 
@@ -191,29 +220,6 @@ void loop()
      y = true; //boolean y becomes true
    }
 }
-
-  Serial.print("Switch: ");             //the name switch appears on the serial monitor
-    Serial.print(digitalRead(SW_pin));    //shows the switch on the serial monitor
-    Serial.print("\n");
-    Serial.print("X-axis: ");             //the name X-axis appears on the serial monitor
-    Serial.print(analogRead(VRx_pin));    //shows the X coordonate on the serial monitor
-    Serial.print("\n");
-    Serial.print("Y-axis: ");             //the name Y-Axis appears on the serial monitor
-    Serial.println(analogRead(VRy_pin));  //shows the Y coordonate on the serial monitor
-    Serial.print("\n");
-    delay(100);
-  
-    if (analogRead(VRy_pin) < 450){  //If the analog stick is pushed down, the servo will move to the right by 10
-      
-    myservo.write(pos);
-    pos -= 10;
-  }
-    else if (analogRead(VRy_pin) > 550){  //If the analog stick is pushed up, the servo will move to the left by 10
-  
-    myservo.write(pos); 
-    pos += 10;}
-// read the state of the switch into a local variable: int reading = digitalRead(ProjectorButtonPin);
-
 
 
 // check to see if you just pressed the button // (i.e. the input went from LOW to HIGH), and you've waited // long enough since the last press to ignore any noise:
